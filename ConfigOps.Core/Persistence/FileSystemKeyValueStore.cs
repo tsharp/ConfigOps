@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ConfigOps.Core.Persistence
 {
-    public class FileSystemKeyValueStore : IKeyValueStore
+    internal class FileSystemKeyValueStore : IKeyValueStore
     {
         private readonly string filePath;
 

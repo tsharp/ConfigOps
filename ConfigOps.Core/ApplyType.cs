@@ -1,6 +1,6 @@
 ﻿namespace ConfigOps.Core
 {
-    public enum ApplyType
+    internal enum ApplyType
     {
         Value,
         Json,

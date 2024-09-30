@@ -1,6 +1,6 @@
 ﻿namespace ConfigOps.Core
 {
-    public enum ExportType
+    internal enum ExportType
     {
         Json,
         Yaml

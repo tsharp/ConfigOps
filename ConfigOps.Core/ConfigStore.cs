@@ -8,7 +8,7 @@ using ConfigOps.Core.Serialization;
 
 namespace ConfigOps.Core
 {
-    public class ConfigStore : IConfigStore
+    internal class ConfigStore : IConfigStore
     {
         private readonly IKeyValueStore store;
 

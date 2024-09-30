@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace ConfigOps.Core.Persistence
 {
-    public interface IKeyValueStore
+    internal interface IKeyValueStore
     {
         public Task SetAsync(string key, byte[] value, CancellationToken cancellationToken = default);
 

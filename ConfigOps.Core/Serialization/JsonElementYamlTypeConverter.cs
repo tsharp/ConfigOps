@@ -6,7 +6,7 @@ using YamlDotNet.Serialization;
 
 namespace ConfigOps.Core.Serialization;
 
-public class JsonElementYamlTypeConverter : IYamlTypeConverter
+internal class JsonElementYamlTypeConverter : IYamlTypeConverter
 {
     public bool Accepts(Type type)
     {

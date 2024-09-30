@@ -2,7 +2,7 @@
 
 namespace ConfigOps.Core
 {
-    public interface IConfigStore
+    internal interface IConfigStore
     {
         Task Apply(string key, object config);
         Task ApplyJson(string key, string config);
