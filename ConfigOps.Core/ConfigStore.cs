@@ -20,13 +20,13 @@ namespace ConfigOps.Core
             this.store = store;
         }
 
-        public Task Apply(string key, object value)
+        public Task SetValue(string key, object value)
         {
             var @bytes = value.SerializeToJsonBytes();
             return store.SetAsync(key, @bytes);
         }
 
-        public Task ApplyJson(string key, string config)
+        public Task SetJson(string key, string config)
         {
             var @object = config.DeserializeFromJson<object>();
             var @bytes = @object.SerializeToJsonBytes();
@@ -34,7 +34,7 @@ namespace ConfigOps.Core
             return store.SetAsync(key, @bytes);
         }
 
-        public Task ApplyYaml(string key, string config)
+        public Task SetYaml(string key, string config)
         {
             var @object = config.DeserializeFromYaml<IDictionary<string, object>>();
             var @bytes = @object.SerializeToJsonBytes();
@@ -51,7 +51,7 @@ namespace ConfigOps.Core
             return @bytes.DeserializeFromJsonBytes<T>();
         }
 
-        public async Task<string> Export(ExportType exportType)
+        public async Task<string> Export(ConfigFormat exportType)
         {
             var result = new Dictionary<string, object>();
             var keys = await store.ScanAsync(string.Empty);
@@ -61,12 +61,12 @@ namespace ConfigOps.Core
                 await ExportValue(result, key, key);
             }
 
-            if (exportType == ExportType.Yaml)
+            if (exportType == ConfigFormat.Yaml)
             {
                 return result.SerializeToYaml();
             }
 
-            if (exportType == ExportType.Json)
+            if (exportType == ConfigFormat.Json)
             {
                 return result.SerializeToJson();
             }
@@ -102,13 +102,28 @@ namespace ConfigOps.Core
             await ExportValue(subStore, fullKey, subKey);
         }
 
-        public Task Import(string json)
-            => Import(json, string.Empty);
+        public Task Apply(ConfigFormat configFormat, string content)
+        {
+            switch (configFormat)
+            {
+                case ConfigFormat.Json:
+                    return Apply(content);
+                case ConfigFormat.Yaml:
+                    return Apply(content.DeserializeFromYaml<IDictionary<string, object>>().SerializeToJson());
+                default:
+                    throw new NotSupportedException();
+            }
+        }
 
-        private async Task Import(string json, string keyPrefix = "")
+        private async Task Apply(string json, string keyPrefix = "")
         {
             var store = json.DeserializeFromJson<IDictionary<string, object>>();
 
+            await Apply(store, keyPrefix);
+        }
+
+        private async Task Apply(IDictionary<string, object> store, string keyPrefix)
+        {
             var jsonObjects = store
                 .Where(v => v.Value.GetType() == typeof(JsonElement) && ((JsonElement)v.Value).ValueKind == JsonValueKind.Object)
                 .ToDictionary(v => v.Key, v => (JsonElement)v.Value);
@@ -119,22 +134,22 @@ namespace ConfigOps.Core
 
             if (jsonObjects.Any())
             {
-                await ImportJsonObjects(jsonObjects, keyPrefix);
+                await ApplyJsonObjects(jsonObjects, keyPrefix);
             }
 
             if (nonObjects.Any())
             {
-                await ImportDictionary(nonObjects, keyPrefix);
+                await ApplyDictionary(nonObjects, keyPrefix);
             }
         }
 
-        private async Task ImportDictionary(IDictionary<string, object> dictionary, string keyPrefix = "")
+        private async Task ApplyDictionary(IDictionary<string, object> dictionary, string keyPrefix = "")
         {
             foreach (var item in dictionary)
             {
                 if (KeyValidator.IsValid(item.Key))
                 {
-                    await ApplyJson($"{keyPrefix}/{item.Key}".TrimStart('/'), item.Value.SerializeToJson());
+                    await SetJson($"{keyPrefix}/{item.Key}".TrimStart('/'), item.Value.SerializeToJson());
                 }
                 else
                 {
@@ -143,11 +158,13 @@ namespace ConfigOps.Core
             }
         }
 
-        private async Task ImportJsonObjects(IDictionary<string, JsonElement> items, string keyPrefix = "")
+        private async Task ApplyJsonObjects(IDictionary<string, JsonElement> items, string keyPrefix = "")
         {
             foreach (var item in items)
             {
-                await Import(item.Value.SerializeToJson(), $"{keyPrefix}/{item.Key}".TrimStart('/'));
+                var itemValue = item.Value.Deserialize<IDictionary<string, object>>();
+
+                await Apply(itemValue, $"{keyPrefix}/{item.Key}".TrimStart('/'));
             }
         }
     }
