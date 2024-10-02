@@ -2,6 +2,7 @@
 using System.IO;
 using YamlDotNet.RepresentationModel;
 using YamlDotNet.Serialization;
+using YamlDotNet.Serialization.NamingConventions;
 
 namespace ConfigOps.Core.Serialization
 {
@@ -12,6 +13,8 @@ namespace ConfigOps.Core.Serialization
             var serializer = new SerializerBuilder()
                 .ConfigureDefaultValuesHandling(DefaultValuesHandling.OmitEmptyCollections | DefaultValuesHandling.OmitNull)
                 .WithTypeConverter(new JsonElementYamlTypeConverter())
+                .WithNamingConvention(CamelCaseNamingConvention.Instance)
+                .WithTypeInspector(x => new SortedTypeInspector(x))
                 .Build();
 
             return serializer.Serialize(value);
@@ -21,6 +24,7 @@ namespace ConfigOps.Core.Serialization
         {
             var deserializer = new DeserializerBuilder()
                 .WithTypeConverter(new JsonElementYamlTypeConverter())
+                .WithNamingConvention(CamelCaseNamingConvention.Instance)
                 .Build();
 
             return deserializer.Deserialize<T>(yaml);

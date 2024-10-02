@@ -1,0 +1,16 @@
+﻿apiVersion: config.ops.kuipersys.com/v1alpha1
+kind: CloudProviderRegion
+metadata:
+  name: uswest1
+  namespace: microsoft-azure
+spec:
+  cloudProvider: microsoft-azure/cloud-config
+  regionName: uswest
+  friendlyName: US West
+  regionCode: us-west-1
+  state: Active
+  settings:
+    subscriptionId: 12345678-1234-1234-1234-123456789012
+    tenantId: 12345678-1234-1234-1234-123456789012
+    clientId: 12345678-1234-1234-1234-123456789012
+    clientSecret: 12345678-1234-1234-1234-123456789012

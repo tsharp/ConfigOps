@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConfigOps.Core", "ConfigOps
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConfigOps.Sdk", "ConfigOps.Sdk\ConfigOps.Sdk.csproj", "{B1173E29-2A04-4BF6-83E9-2CD5E70724FE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConfigOps.Sdk.UnitTests", "ConfigOps.Sdk.UnitTests\ConfigOps.Sdk.UnitTests.csproj", "{E348C906-D570-4D08-8827-763DF92965CA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{B1173E29-2A04-4BF6-83E9-2CD5E70724FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B1173E29-2A04-4BF6-83E9-2CD5E70724FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B1173E29-2A04-4BF6-83E9-2CD5E70724FE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E348C906-D570-4D08-8827-763DF92965CA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E348C906-D570-4D08-8827-763DF92965CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E348C906-D570-4D08-8827-763DF92965CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E348C906-D570-4D08-8827-763DF92965CA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
