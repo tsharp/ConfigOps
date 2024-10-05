@@ -1,0 +1,8 @@
+﻿data:
+  secretStoreXyz: abcd
+apiVersion: config.kuipersys.com/v1alpha1
+kind: ServiceGroup
+metadata:
+  name: service-example-uswest1
+  namespace: amazon-aws
+  inheritedConfigs:

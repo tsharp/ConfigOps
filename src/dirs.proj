@@ -1,0 +1,9 @@
+<Project Sdk="Microsoft.Build.Traversal">
+  <!-- <Sdk Name="MSBuild.NpmRestore" /> -->
+  <ItemGroup>
+    <ProjectFile Include="CfgCtl\CfgCtl.csproj" />
+    <ProjectFile Include="ConfigOps.Core\ConfigOps.Core.csproj" />
+    <ProjectFile Include="ConfigOps.Sdk\ConfigOps.Sdk.csproj" />
+    <ProjectFile Include="ConfigOps.Sdk.UnitTests\ConfigOps.Sdk.UnitTests.csproj" />
+  </ItemGroup>
+</Project>

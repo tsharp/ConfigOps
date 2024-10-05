@@ -1,0 +1,17 @@
+﻿$schema: http://json-schema.org/draft-04/schema#
+type: object
+additionalProperties: {}
+properties:
+  name:
+    type: string
+  namespace:
+    type: string
+  labels:
+    type: object
+    x-nullable: true
+    additionalProperties:
+      type: string
+  annotations:
+    type: object
+    x-nullable: true
+    additionalProperties: {}

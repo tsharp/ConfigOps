@@ -1,0 +1,10 @@
+﻿data:
+  setting1: value1
+  setting2: value2
+apiVersion: config.kuipersys.com/v1alpha1
+kind: GenericConfig
+metadata:
+  name: global-config
+  namespace: global
+  inheritedConfigs:
+  - global/app-config-base-1
