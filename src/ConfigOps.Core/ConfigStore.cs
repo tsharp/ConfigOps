@@ -123,9 +123,9 @@ namespace ConfigOps.Core
             switch (configFormat)
             {
                 case ConfigFormat.Json:
-                    return Apply(content.JsonToObject<SystemObject>(), @namespace);
+                    return this.Apply(content.JsonToObject<SystemObject>(), @namespace);
                 case ConfigFormat.Yaml:
-                    return ApplyAll(@namespace, content.MultiYamlToObject<SystemObject>().ToArray());
+                    return this.ApplyAll(@namespace, content.MultiYamlToObject<SystemObject>().ToArray());
                 default:
                     throw new NotSupportedException();
             }
@@ -136,21 +136,21 @@ namespace ConfigOps.Core
             // Validate All Before Applying
             foreach (var obj in systemObject)
             {
-                ValidateSystemObject(obj);
+                this.ValidateSystemObject(obj);
             }
 
             // Apply All
             foreach (var obj in systemObject)
             {
-                await Apply(obj, @namespace);
+                await this.Apply(obj, @namespace);
             }
         }
 
         private async Task Apply(SystemObject systemObject, string @namespace)
         {
-            ValidateSystemObject(systemObject);
+            this.ValidateSystemObject(systemObject);
 
-            await SetValue(GetSystemObjectKey(systemObject, @namespace), systemObject);
+            await this.SetValue(this.GetSystemObjectKey(systemObject, @namespace), systemObject);
         }
 
         private void ValidateSystemObject(SystemObject systemObject)
@@ -197,9 +197,9 @@ namespace ConfigOps.Core
         public async Task Patch(ConfigFormat configFormat, string config, string @namespace)
         {
             var delta = config.YamlToObject<SystemObject>();
-            var key = GetSystemObjectKey(delta, @namespace);
+            var key = this.GetSystemObjectKey(delta, @namespace);
 
-            var target = await Get<SystemObject>(key);
+            var target = await this.Get<SystemObject>(key);
 
             if (!target.ApiVersion.Equals(delta.ApiVersion))
             {
