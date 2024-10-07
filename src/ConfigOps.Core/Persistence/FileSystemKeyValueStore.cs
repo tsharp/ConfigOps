@@ -28,7 +28,7 @@ namespace ConfigOps.Core.Persistence
 
         public Task<byte[]> GetAsync(string key, CancellationToken cancellationToken = default)
         {
-            var path = ValidateAndGetFileSystemKey(key);
+            var path = this.ValidateAndGetFileSystemKey(key);
 
             if (File.Exists(path))
             {
@@ -40,7 +40,7 @@ namespace ConfigOps.Core.Persistence
 
         public Task<bool> RemoveAsync(string key, CancellationToken cancellationToken = default)
         {
-            var path = ValidateAndGetFileSystemKey(key);
+            var path = this.ValidateAndGetFileSystemKey(key);
             var directory = Path.GetDirectoryName(path);
 
             if (File.Exists(path))
@@ -59,7 +59,7 @@ namespace ConfigOps.Core.Persistence
 
         public Task SetAsync(string key, byte[] value, CancellationToken cancellationToken = default)
         {
-            var path = ValidateAndGetFileSystemKey(key, true);
+            var path = this.ValidateAndGetFileSystemKey(key, true);
 
             var directory = Path.GetDirectoryName(path);
 
@@ -114,9 +114,9 @@ namespace ConfigOps.Core.Persistence
         public async Task<IEnumerable<string>> ScanAsync(string prefix, CancellationToken cancellationToken = default)
         {
             await Task.CompletedTask;
-            string filePathPrefix = string.IsNullOrWhiteSpace(prefix) ? filePath : ValidateAndGetFileSystemKey(prefix);
+            string filePathPrefix = string.IsNullOrWhiteSpace(prefix) ? filePath : this.ValidateAndGetFileSystemKey(prefix);
             var files = Directory.EnumerateFiles(filePathPrefix, "*", SearchOption.AllDirectories);
-            return files.Select(ConvertPathToKey).ToArray();
+            return files.Select(this.ConvertPathToKey).ToArray();
         }
     }
 }

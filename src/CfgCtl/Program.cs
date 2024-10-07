@@ -5,7 +5,6 @@ using ConfigOps.Sdk.Serialization;
 using System.CommandLine;
 using System.CommandLine.Invocation;
 using System.CommandLine.Parsing;
-using System.Reflection;
 
 namespace CfgCtl
 {
@@ -13,14 +12,10 @@ namespace CfgCtl
     {
         static async Task Main(string[] args)
         {
-            // Console.WriteLine(Convert.ToHexString(Assembly.GetExecutingAssembly().GetName().GetPublicKey()));
-
             IKeyValueStore fileSystemKeyValueStore = FileSystemKeyValueStore.Create("C:\\testing\\sample-store");
             IConfigStore configStore = ConfigStore.Create(fileSystemKeyValueStore);
 
-            // cfgctl --scope Global --instance None --namespace default apply --file C:\testing\sample-store\sample.json
-
-            var rootCommand = new RootCommand("ConfigOps Config Control - cfgctl")
+            var rootCommand = new RootCommand("ConfigOps Control - cfgctl")
             {
                 TreatUnmatchedTokensAsErrors = true
             };
@@ -30,9 +25,9 @@ namespace CfgCtl
                 IsRequired = false
             };
 
-            var outputFormatOption = new Option<OutputFormat>(["--output", "-o"], () => OutputFormat.Yaml, "The output format used") 
-            { 
-                IsRequired = false 
+            var outputFormatOption = new Option<OutputFormat>(["--output", "-o"], () => OutputFormat.Yaml, "The output format used")
+            {
+                IsRequired = false
             };
 
             var fileOption = new Option<string>(["--file", "-f"], "Filename, directory, or URL to file to use to apply the resource.");
@@ -92,13 +87,13 @@ namespace CfgCtl
                 var key = string.Join('/', parts.Where(p => !string.IsNullOrWhiteSpace(p)));
 
                 Console.WriteLine($"Getting Resource: {key}");
-                
+
                 try
                 {
                     var @object = await configStore.Get<SystemObject>(key);
                     Console.WriteLine(@object.ObjectToYaml());
                 }
-                catch(KeyNotFoundException)
+                catch (KeyNotFoundException)
                 {
                     Console.WriteLine($"Resource not found: {key}");
                 }
@@ -170,29 +165,6 @@ namespace CfgCtl
                 }
             });
 
-            // var export_command = new Command("export", "Export resources to a file.");
-            // var import_command = new Command("import", "Import resources from a file.");
-
-            // var edit_command = new Command("edit", "Edit a resource on the server.");
-            // var label_command = new Command("label", "Update the labels on a resource.");
-            // var annotate_command = new Command("annotate", "Update the annotations on a resource.");
-            // var patch_command = new Command("patch", "Update field(s) of a resource using strategic merge patch.");
-            // var replace_command = new Command("replace", "Replace a resource by filename or stdin.");
-            // var scale_command = new Command("scale", "Set a new size for a Deployment, ReplicaSet, Replication Controller, or Job.");
-            // var set_command = new Command("set", "Configure specific resources.");
-            // var rollout_command = new Command("rollout", "Manage the rollout of a resource.");
-            // var run_command = new Command("run", "Run a particular image on the cluster.");
-            // var expose_command = new Command("expose", "Take a replication controller, service, deployment or pod and expose it as a new Kubernetes Service.");
-            // var autoscale_command = new Command("autoscale", "Auto-scale a Deployment, ReplicaSet, or ReplicationController.");
-            // var attach_command = new Command("attach", "Attach to a running container.");
-            // var exec_command = new Command("exec", "Execute a command in a container.");
-            // var port_forward_command = new Command("port-forward", "Forward one or more local ports to a pod.");
-            // var proxy_command = new Command("proxy", "Run a proxy to the Kubernetes API server.");
-            // var cp_command = new Command("cp", "Copy files and directories to and from containers.");
-            // var auth_command = new Command("auth", "Inspect authorization.");
-            // var logs_command = new Command("logs", "Print the logs for a container in a pod.");
-
-            // Namespaces can further subdivide any instances (Global, Cloud, Regional, Service, etc)
             apply_command.AddOption(namespaceOption);
             apply_command.AddOption(fileOption);
 

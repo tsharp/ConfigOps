@@ -7,31 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Serialization\JsonElementYamlTypeConverter.cs" />
-    <Compile Remove="Serialization\JsonSerializerExtensions.cs" />
-    <Compile Remove="Serialization\SerializationExtensions.cs" />
-    <Compile Remove="Serialization\SortedTypeInspector.cs" />
-    <Compile Remove="Serialization\YamlSerializationExtensions.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="Serialization\JsonElementYamlTypeConverter.cs" />
-    <None Include="Serialization\JsonSerializerExtensions.cs" />
-    <None Include="Serialization\SerializationExtensions.cs" />
-    <None Include="Serialization\YamlSerializationExtensions.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="System.Text.Json" />
     <PackageReference Include="YamlDotNet" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\ConfigOps.Sdk\ConfigOps.Sdk.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="Serialization\SortedTypeInspector.cs" />
   </ItemGroup>
 
 </Project>
